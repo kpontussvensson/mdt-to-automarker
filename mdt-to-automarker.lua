@@ -1,5 +1,5 @@
 -- 1. Get MDT dungeon files and place them in the input folder
--- 2. Run the script
+-- 2. Run the script, it will set mobs that has interruptible casts in the MDT files as 'shouldMark = true' in the output files
 -- 3. Copy the Mythic+ Auto Marker from inside WeakAuras.lua SavedVariables into a text editor
 -- 4. Replace all ["IID1234"] with the script output
 -- 5. Get the right IID's from https://wago.tools/db2/Map?page=1
@@ -62,14 +62,25 @@ for i = 1, #input_dungeons, 1 do
     for k, v in pairs(input) do
         if not table.containsValue(blacklisted_mobs, v["name"]) then
             local mob = {}
+
             if table.containsKey(v, "isBoss") then
                 mob["npcName"] = " BOSS: " .. v["name"]
             else
                 mob["npcName"] = v["name"]
             end
+
             mob["enemyGroup"] = 1
             mob["npcId"] = tostring(v["id"])
-            mob["shouldMark"] = false
+
+            local shouldMark = false
+
+            for key, value in pairs(v["spells"]) do
+                if value.interruptible then
+                    shouldMark = true
+                end
+            end
+
+            mob["shouldMark"] = shouldMark
 
             table.insert(output, mob)
         end
