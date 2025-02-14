@@ -37,7 +37,7 @@ for i = 1, #input_dungeons, 1 do
     local file = io.open("C:\\WS\\mdt-to-automarker\\input\\" .. input_dungeons[i], "r")
     if file == nil then return end
 
-    local whole_file = file:read("a")
+    local whole_file = file:read("*all")
     local delim = "MDT.dungeonEnemies[dungeonIndex] ="
     local pos = whole_file:find(delim, 1, true)
 
