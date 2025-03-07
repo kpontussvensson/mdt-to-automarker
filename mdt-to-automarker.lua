@@ -73,10 +73,11 @@ for i = 1, #input_dungeons, 1 do
             mob["npcId"] = tostring(v["id"])
 
             local shouldMark = false
-
-            for key, value in pairs(v["spells"]) do
-                if value.interruptible then
-                    shouldMark = true
+            if v["spells"] then
+                for key, value in pairs(v["spells"]) do
+                    if value.interruptible then
+                        shouldMark = true
+                    end
                 end
             end
 
